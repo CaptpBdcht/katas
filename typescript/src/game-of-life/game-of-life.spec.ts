@@ -5,7 +5,7 @@ import { GameOfLife } from './game-of-life';
 
 should();
 
-describe('Game make Life should', () => {
+describe('Game of life should', () => {
 
     const sut: GameOfLife = new GameOfLife();
 
