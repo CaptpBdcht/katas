@@ -24,12 +24,11 @@ export class Potter {
 }
 
 let removeItemsFrom = (array: string[], removable: Set<string>) => {
-  Array
-    .from(removable)
-    .forEach(item => array.splice(array.indexOf(item), 1));
+  removable.forEach(item => array.splice(array.indexOf(item), 1));
 
   return array;
 };
 
 // Modifier le code pour facilement ajouter des bouquins ?
-// 
+// Ajouter Star Wars, autres règles:
+//        trilogie = 33% reduc sur la trilogie
