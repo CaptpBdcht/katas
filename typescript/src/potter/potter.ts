@@ -1,27 +1,35 @@
 export class Potter {
 
-  static discountByUniqueness: any = {
+  static discountBy: any = {
     5: 0.75,
     4: 0.8,
     3: 0.9,
-    2: 0.95
+    2: 0.95,
+    1: 1
   };
 
-  buy(books?: string[]): number {
-    if (!books || !books.length) {
-      return 0;
+  buy(books: string[]): number {
+    let price = 0;
+
+    while (books.length) {
+      let uniqueBooks = new Set(books);
+
+      price += 8 * uniqueBooks.size * Potter.discountBy[uniqueBooks.size]
+      
+      removeItemsFrom(books, uniqueBooks)
     }
 
-    let uniques = uniq(books);
-
-    if (uniques === 1) {
-      return 8 * books.length;
-    }
-
-    return 8 * (uniques * Potter.discountByUniqueness[uniques] + (books.length - uniques))
+    return price;
   }
 }
 
-let uniq = (arrArg: string[]) => arrArg.filter(
-  (elem, pos, arr) => arr.indexOf(elem) == pos
-).length;
+let removeItemsFrom = (array: string[], removable: Set<string>) => {
+  Array
+    .from(removable)
+    .forEach(item => array.splice(array.indexOf(item), 1));
+
+  return array;
+};
+
+// Modifier le code pour facilement ajouter des bouquins ?
+// 
