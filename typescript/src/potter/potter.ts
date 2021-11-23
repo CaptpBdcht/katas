@@ -30,5 +30,6 @@ let removeItemsFrom = (array: string[], removable: Set<string>) => {
 };
 
 // Modifier le code pour facilement ajouter des bouquins ?
+//        -> extract discount + new book
 // Ajouter Star Wars, autres règles:
 //        trilogie = 33% reduc sur la trilogie
