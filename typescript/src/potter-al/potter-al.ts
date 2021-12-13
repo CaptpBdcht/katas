@@ -1,14 +1,25 @@
-export class Potter {
+type DiscountTable = { [booksCount: number]: number }
 
-  static readonly BOOK_PRICE = 8;
+const LOTRDiscounts = {
+  3: 0.3,
+  2: 0.2,
+  1: 0,
+  0: 0,
+};
 
-  static readonly discounts: any = {
-    5: 0.25,
-    4: 0.2,
-    3: 0.1,
-    2: 0.05,
-    1: 0,
-    0: 0,
+const PotterDiscounts = {
+  5: 0.25,
+  4: 0.2,
+  3: 0.1,
+  2: 0.05,
+  1: 0,
+  0: 0,
+}
+
+export class Book {
+  readonly BOOK_PRICE = 8;
+
+  constructor(readonly discounts: DiscountTable) {
   }
 
   price(books: number[]): number {
@@ -17,21 +28,28 @@ export class Potter {
     while (books.length !== 0) {
       const uniqueBooks = new Set(books);
 
-      total += Potter.BOOK_PRICE * uniqueBooks.size * (1 - Potter.discounts[uniqueBooks.size]);
+      total += this.BOOK_PRICE * uniqueBooks.size * (1 - this.discounts[uniqueBooks.size]);
 
-      books = this.removeFrom(books, uniqueBooks);
+      uniqueBooks.forEach(item => books.splice(books.indexOf(item), 1));
     }
 
     return total;
   }
-  
-  private removeFrom(array: number[], removable: Set<number>): number[] {
-    removable.forEach(item => array.splice(array.indexOf(item), 1));
-    return array;
+}
+
+export class LOTR extends Book {
+  constructor() {
+    super(LOTRDiscounts);
   }
 }
 
-// 1 - Ajoutez LOTR avec la même logique 
+export class Potter extends Book {
+  constructor() {
+    super(PotterDiscounts);
+  }
+}
+
+// 1 - Ajoutez Lord Of The Rings (trilogie) avec la même logique 
 
 // 2 - Changez le discount pour LOTR - 2 livres : 20% 3 livres : 30 %
 
