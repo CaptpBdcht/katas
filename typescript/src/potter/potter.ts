@@ -19,19 +19,9 @@ export class Potter {
 
       total += Potter.BOOK_PRICE * uniqueBooks.size * (1 - Potter.discounts[uniqueBooks.size]);
 
-      books = this.removeFrom(books, uniqueBooks);
+      uniqueBooks.forEach(item => books.splice(books.indexOf(item), 1));
     }
 
     return total;
   }
-  
-  private removeFrom(array: number[], removable: Set<number>): number[] {
-    removable.forEach(item => array.splice(array.indexOf(item), 1));
-    return array;
-  }
 }
-
-// 1 - Ajoutez LOTR avec la même logique 
-
-// 2 - Changez le discount pour LOTR - 2 livres : 20% 3 livres : 30 %
-
