@@ -48,6 +48,11 @@ describe('FizzBuzz should', () => {
         fizzbuzz.withDivisors(1, 2).range(3);
       })
       .should.throw('Divisors cannot be 1');
+
+      (function () {
+        fizzbuzz.withDivisors(2, 1).range(3);
+      })
+      .should.throw('Divisors cannot be 1');
     });
 
     it('should throw with negative divisors', () => {
@@ -59,9 +64,9 @@ describe('FizzBuzz should', () => {
 
     it('should throw with not prime values', () => {
       (function () {
-        fizzbuzz.withDivisors(2, 4).range(3);
+        fizzbuzz.withDivisors(4, 8).range(3);
       })
-      .should.throw('Divisor must be a prime');
+      .should.throw('Divisors must be primes');
     });
 
     it('should work with 2 and 5', () => {

@@ -17,7 +17,9 @@ export class FizzBuzzArgumentsBuilder {
         return new FizzBuzz().range(+parts[0])
       case 2:
         const divisors = parts[0].split(',');
-        return new FizzBuzz().withDivisors(+divisors[0], +divisors[1]).range(+parts[1])
+        return new FizzBuzz()
+                    .withDivisors(+divisors[0], +divisors[1])
+                    .range(+parts[1])
       default:
         throw new Error('Too many arguments provided, expected 1 or 2');
     }

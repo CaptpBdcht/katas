@@ -24,6 +24,6 @@ export class NegativeDivisorError extends Error {
 
 export class OnlyPrimeDivisorError extends Error {
   constructor() {
-    super('Divisor must be a prime');
+    super('Divisors must be primes');
   }
 }
