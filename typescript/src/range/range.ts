@@ -1,13 +1,29 @@
-enum Boundary {
-    LEFT_CLOSED = '[',
-    RIGHT_CLOSED = ']',
-    LEFT_OPEN = '(',
-    RIGHT_OPEN = ')'
+abstract class Boundary {
+    readonly openSymbol: string;
+    readonly closeSymbol: string;
+
+    constructor(open = false) {
+        this.isOpen = open;
+    }
+
+    get symbol(): string {
+        return this.isOpen ? this.openSymbol : this.closeSymbol;
+    }
+}
+
+export class LeftBoundary extends Boundary {
+    readonly openSymbol = '(';
+    readonly closeSymbol = '[';
+}
+
+export class RightBoundary extends Boundary {
+    readonly openSymbol = ')';
+    readonly closeSymbol = ']';
 }
 
 export class Range {
     private constructor(
-        readonly left: number, 
+        readonly left: number,
         readonly right: number,
         private leftBoundary: Boundary,
         private rightBoundary: Boundary
@@ -16,13 +32,13 @@ export class Range {
     static create(
         left: number,
         right: number,
-        leftBoundary = Boundary.LEFT_CLOSED,
-        rightBoundary = Boundary.RIGHT_CLOSED
+        leftBoundary = new LeftBoundary(),
+        rightBoundary = new RightBoundary()
     ): Range {
-        if (leftBoundary === Boundary.LEFT_OPEN) {
+        if (leftBoundary.isOpen) {
             left += 1;
         }
-        if (rightBoundary === Boundary.RIGHT_OPEN) {
+        if (rightBoundary.isOpen) {
             right -= 1;
         }
         return new Range(left, right, leftBoundary, rightBoundary);
@@ -60,8 +76,6 @@ export class Range {
         return new Range(
             Math.max(this.left, other.left),
             Math.min(this.right, other.right),
-            Boundary.LEFT_CLOSED,
-            Boundary.RIGHT_CLOSED
         );
     }
 }
