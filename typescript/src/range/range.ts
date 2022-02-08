@@ -1,13 +1,14 @@
 abstract class Boundary {
     readonly openSymbol: string;
     readonly closeSymbol: string;
+    readonly open: boolean;
 
     constructor(open = false) {
-        this.isOpen = open;
+        this.open = open;
     }
 
     get symbol(): string {
-        return this.isOpen ? this.openSymbol : this.closeSymbol;
+        return this.open ? this.openSymbol : this.closeSymbol;
     }
 }
 
@@ -25,8 +26,8 @@ export class Range {
     private constructor(
         readonly left: number,
         readonly right: number,
-        private leftBoundary: Boundary,
-        private rightBoundary: Boundary
+        private leftBoundary?: Boundary,
+        private rightBoundary?: Boundary
     ) {}
 
     static create(
@@ -35,10 +36,10 @@ export class Range {
         leftBoundary = new LeftBoundary(),
         rightBoundary = new RightBoundary()
     ): Range {
-        if (leftBoundary.isOpen) {
+        if (leftBoundary.open) {
             left += 1;
         }
-        if (rightBoundary.isOpen) {
+        if (rightBoundary.open) {
             right -= 1;
         }
         return new Range(left, right, leftBoundary, rightBoundary);
@@ -47,15 +48,24 @@ export class Range {
     contains(value: number): boolean {
         return this.left <= value && value <= this.right;
     }
-
+    
     containsRange(other: Range): boolean {
         return this.left <= other.left && other.right <= this.right;
     }
+
+    // Can also be done using #contains
+    // 2x more tests done (ifs)
+    // More sensible to changes made to #contains
+    // containsRange(other: Range): boolean {
+    //     return this.contains(other.left) && this.contains(other.right);
+    // }
 
     size(): number {
         return this.right - this.left + 1;
     }
 
+    // Should always return an iterator
+    // Otherwise there could be issues for large ranges...
     values(): number[] {
         const valuesArray: number[] = [];
         for (let i = this.left; i <= this.right; i++) {
@@ -68,6 +78,14 @@ export class Range {
         return [this.left, this.right];
     }
 
+    // Another strategy could be to return null when
+    // there is no intersection and let the consumer
+    // validate by himself the result before using it..
+    //
+    // intersect(other: Range): Range | null {
+    // if (this.right < other.left || other.right < this.left) {
+    //     return null;
+    // }
     intersect(other: Range): Range {
         if (this.right < other.left || other.right < this.left) {
             throw new Error('Ranges do not intersect');
